@@ -15,7 +15,8 @@
             android:id="@+id/image_detail"
             android:layout_width="150dp"
             android:layout_height="225dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:contentDescription="@string/poster_movie" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,13 +31,13 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="22sp"
-                android:text="Ralph Breaks the Internet"/>
+                android:text="@string/title"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"
-                android:text="Rating"/>
+                android:text="@string/rating"/>
             <TextView
                 android:id="@+id/rating_detail"
                 android:layout_width="wrap_content"
@@ -47,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:text="Release" />
+                android:text="@string/release" />
             <TextView
                 android:id="@+id/release_detail"
                 android:layout_width="wrap_content"
@@ -58,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:text="Runtime"/>
+                android:text="@string/runtime"/>
             <TextView
                 android:id="@+id/runtime_detail"
                 android:layout_width="wrap_content"
@@ -77,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Genres" />
+                android:text="@string/genres" />
             <TextView
                 android:id="@+id/genres_detail"
                 android:layout_width="wrap_content"
@@ -88,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
                 android:textStyle="bold"
-                android:text="Descriptions"/>
+                android:text="@string/descriptions"/>
             <TextView
                 android:id="@+id/desc_detail"
                 android:layout_width="wrap_content"

@@ -6,7 +6,7 @@ import com.example.moviesapp.utils.DataDummy
 
 class DetailViewModel : ViewModel() {
 
-    var id: Int = 0
+    private var id: Int = 0
 
     fun setSelectedCourse(id: Int) {
         this.id = id

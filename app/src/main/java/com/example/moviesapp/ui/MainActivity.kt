@@ -1,7 +1,6 @@
 package com.example.moviesapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moviesapp.R
