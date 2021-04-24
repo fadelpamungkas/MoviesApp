@@ -22,8 +22,8 @@ class DetailActivity : AppCompatActivity() {
 
         if (intent.extras != null) {
             val id = intent.getIntExtra(EXTRA_MOVIE, 0)
-            viewModel.setSelectedCourse(id)
-            val movie = viewModel.getCourse()
+            viewModel.setSelectedData(id)
+            val movie = viewModel.getData()
             if (movie != null) {
                 bindView(movie)
             }

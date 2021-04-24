@@ -8,11 +8,11 @@ class DetailViewModel : ViewModel() {
 
     private var id: Int = 0
 
-    fun setSelectedCourse(id: Int) {
+    fun setSelectedData(id: Int) {
         this.id = id
     }
 
-    fun getCourse(): Movie? {
+    fun getData(): Movie? {
         var movie: Movie? = null
         for (data in DataDummy.generateDummyMovies()) {
             if (data.id == id) {
