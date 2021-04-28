@@ -56,10 +56,12 @@ class TabFragment : Fragment() {
                 val adapter = MovieAdapter()
                 adapter.notifyDataSetChanged()
                 binding.rvFragment.adapter = adapter
+                binding.progressbar.visibility = View.VISIBLE
 
                 mainViewModel.getMovie().observe(viewLifecycleOwner, { listMovies ->
                     if (listMovies != null) {
                         adapter.setMovies(listMovies)
+                        binding.progressbar.visibility = View.GONE
                     }
                 })
 
@@ -79,10 +81,12 @@ class TabFragment : Fragment() {
                 val adapter = TVShowAdapter()
                 adapter.notifyDataSetChanged()
                 binding.rvFragment.adapter = adapter
+                binding.progressbar.visibility = View.VISIBLE
 
                 mainViewModel.getTVShow().observe(viewLifecycleOwner, { listTVs ->
                     if (listTVs != null) {
                         adapter.setTVShow(listTVs)
+                        binding.progressbar.visibility = View.GONE
                     }
                 })
 

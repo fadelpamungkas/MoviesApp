@@ -1,6 +1,7 @@
 package com.example.moviesapp.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -31,16 +32,20 @@ class DetailActivity : AppCompatActivity() {
             val id = intent.getIntExtra(EXTRA_ID, 0)
             val type = intent.getIntExtra(EXTRA_TYPE, 0)
 
+            binding.progressbar.visibility = View.VISIBLE
+
             viewModel.setSelectedData(id)
             when (type) {
                 EXTRA_MOVIE -> {
                     viewModel.getSelectedMovie().observe(this, { movie ->
                         bindView(movie)
+                        binding.progressbar.visibility = View.GONE
                     })
                 }
                 EXTRA_TVSHOW -> {
                     viewModel.getSelectedTVShow().observe(this, { tvShow ->
                         bindView(tvShow)
+                        binding.progressbar.visibility = View.GONE
                     })
                 }
                 else -> return
