@@ -1,5 +1,6 @@
 package com.example.moviesapp.ui
 
+import com.example.moviesapp.ui.home.MainViewModel
 import junit.framework.TestCase
 
 class MainViewModelTest : TestCase() {

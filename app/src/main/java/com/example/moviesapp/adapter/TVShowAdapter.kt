@@ -5,18 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.moviesapp.model.Movie
 import com.example.moviesapp.databinding.CardviewItemBinding
-import java.util.*
+import com.example.moviesapp.model.Movie
+import com.example.moviesapp.model.TVShow
+import java.util.ArrayList
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.CardViewViewHolder>() {
+class TVShowAdapter : RecyclerView.Adapter<TVShowAdapter.CardViewViewHolder>() {
 
-    private var movies = ArrayList<Movie>()
+    private var tvShows = ArrayList<TVShow>()
     private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setMovies(movieList: ArrayList<Movie>) {
-        movies.clear()
-        movies.addAll(movieList)
+    fun setTVShow(tvShowList: ArrayList<TVShow>) {
+        tvShows.clear()
+        tvShows.addAll(tvShowList)
         notifyDataSetChanged()
     }
 
@@ -30,27 +31,27 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.CardViewViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CardViewViewHolder, position: Int) {
-        holder.bind(movies[position])
+        holder.bind(tvShows[position])
     }
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = tvShows.size
 
     inner class CardViewViewHolder(private val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie){
+        fun bind(tvShow: TVShow){
             with(binding){
                 Glide.with(itemView.context)
-                    .load("https://image.tmdb.org/t/p/w185" + movie.photo)
+                    .load("https://image.tmdb.org/t/p/w185" + tvShow.photo)
                     .into(imageMain)
-                titleMain.text = movie.title
+                titleMain.text = tvShow.title
 
                 itemView.setOnClickListener {
-                    onItemClickCallback?.onItemClicked(movie)
+                    onItemClickCallback?.onItemClicked(tvShow)
                 }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: Movie)
+        fun onItemClicked(data: TVShow)
     }
 }

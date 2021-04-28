@@ -1,4 +1,4 @@
-package com.example.moviesapp.ui
+package com.example.moviesapp.ui.home
 
 import android.os.Bundle
 import androidx.annotation.StringRes

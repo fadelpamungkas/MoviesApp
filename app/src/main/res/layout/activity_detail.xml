@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".ui.DetailActivity">
+    tools:context=".ui.detail.DetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
                 android:textSize="22sp"
                 android:text="@string/title"/>
             <TextView
+                android:id="@+id/rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
             <TextView
+                android:id="@+id/release"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
             <TextView
+                android:id="@+id/runtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -74,16 +77,6 @@
             android:layout_below="@id/image_detail"
             android:layout_marginTop="26dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="@string/genres" />
-            <TextView
-                android:id="@+id/genres_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

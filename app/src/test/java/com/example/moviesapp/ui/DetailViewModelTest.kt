@@ -1,6 +1,6 @@
 package com.example.moviesapp.ui
 
-import com.example.moviesapp.utils.DataDummy
+import com.example.moviesapp.ui.detail.DetailViewModel
 import junit.framework.TestCase
 
 class DetailViewModelTest : TestCase() {

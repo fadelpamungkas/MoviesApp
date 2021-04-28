@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.moviesapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +13,7 @@
         android:theme="@style/Theme.MoviesApp">
 
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,17 +23,17 @@
         </activity>
 
         <activity
-            android:name=".ui.DetailActivity"
-            android:parentActivityName=".ui.MainActivity">
+            android:name=".ui.detail.DetailActivity"
+            android:parentActivityName=".ui.home.MainActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
+                android:value=".ui.home.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ui.MainActivity"/>
+            android:name=".ui.home.MainActivity"/>
     </application>
 
 

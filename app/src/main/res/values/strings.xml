@@ -9,4 +9,9 @@
     <string name="runtime">Runtime</string>
     <string name="genres">Genres</string>
     <string name="descriptions">Descriptions</string>
+    <string name="release_date">Release Date</string>
+    <string name="first_air_date">First Air Date</string>
+    <string name="episodes">Episodes</string>
+    <string name="minutes_ext">"%1$s min"</string>
+    <string name="episodes_ext">"%1$s eps"</string>
 </resources>
