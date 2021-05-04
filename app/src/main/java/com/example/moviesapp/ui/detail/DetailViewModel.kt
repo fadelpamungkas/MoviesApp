@@ -6,16 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
+import com.example.moviesapp.repository.Repository
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(private val repository: Repository = AppRepository()) : ViewModel() {
 
-    private val repository: AppRepository = AppRepository()
+    var id: Int = 0
 
-    private var id: Int = 0
-
-    fun setSelectedData(id: Int) {
-        this.id = id
-    }
+    fun setSelectedData(id: Int) { this.id = id }
 
     fun getSelectedMovie() : LiveData<Movie> {
         return repository.getDetailMovie(id)

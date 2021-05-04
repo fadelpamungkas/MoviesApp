@@ -5,27 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
+import com.example.moviesapp.repository.Repository
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val repository: Repository = AppRepository()) : ViewModel() {
 
-    private val repository: AppRepository = AppRepository()
-    private val listMovies: LiveData<ArrayList<Movie>>
-    private val listTVShows: LiveData<ArrayList<TVShow>>
+    fun getMovie() : LiveData<ArrayList<Movie>>  = repository.getPopularMovies()
 
-    init {
-        repository.getPopularMovies()
-        repository.getPopularTVs()
-        listMovies = repository.responseMovie
-        listTVShows = repository.responseTVShow
-    }
-
-
-    fun getMovie() : LiveData<ArrayList<Movie>> {
-        return listMovies
-    }
-
-    fun getTVShow() : LiveData<ArrayList<TVShow>> {
-        return listTVShows
-    }
+    fun getTVShow() : LiveData<ArrayList<TVShow>> = repository.getPopularTVs()
 
 }
