@@ -6,7 +6,7 @@ import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 
 
-class FakeRepository private constructor(private val fakeRemoteData: FakeRemoteData) : Repository{
+class FakeRepository (private val fakeRemoteData: FakeRemoteData) : Repository{
 
     companion object {
         @Volatile
