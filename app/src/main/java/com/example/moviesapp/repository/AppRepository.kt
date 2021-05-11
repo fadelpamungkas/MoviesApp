@@ -16,13 +16,17 @@ import retrofit2.Response
 
 class AppRepository : Repository{
 
-    override fun getPopularMovies(): LiveData<ArrayList<Movie>> {
-        val responseMovie = MutableLiveData<ArrayList<Movie>>()
+    private val _responsePopularMovie = MutableLiveData<ArrayList<Movie>>()
+    private val _responsePopularTV = MutableLiveData<ArrayList<TVShow>>()
+    val _responseDetailMovie = MutableLiveData<Movie>()
+    val _responseDetailTV = MutableLiveData<TVShow>()
+
+    override fun getPopularMovies() : LiveData<ArrayList<Movie>>{
         EspressoIdlingResource.increment()
         RetrofitClient.create().getPopularMovies(BuildConfig.API_KEY).enqueue(object : Callback<PopularMovies> {
             override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {
                 if (response.isSuccessful) {
-                    responseMovie.postValue(response.body()?.result)
+                    _responsePopularMovie.postValue(response.body()?.result)
 
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                         EspressoIdlingResource.decrement()
@@ -36,16 +40,15 @@ class AppRepository : Repository{
             }
 
         })
-        return responseMovie
+        return _responsePopularMovie
     }
 
     override fun getDetailMovie(id : Int) : LiveData<Movie> {
-        val responseData = MutableLiveData<Movie>()
         EspressoIdlingResource.increment()
         RetrofitClient.create().getDetailMovie(id, BuildConfig.API_KEY).enqueue(object : Callback<Movie> {
             override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
                 if (response.isSuccessful) {
-                    responseData.postValue(response.body())
+                    _responseDetailMovie.postValue(response.body())
 
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                         EspressoIdlingResource.decrement()
@@ -59,16 +62,15 @@ class AppRepository : Repository{
 
         })
 
-        return responseData
+        return _responseDetailMovie
     }
 
-    override fun getPopularTVs(): LiveData<ArrayList<TVShow>> {
-        val responseTVShow = MutableLiveData<ArrayList<TVShow>>()
+    override fun getPopularTVs() : LiveData<ArrayList<TVShow>>{
         EspressoIdlingResource.increment()
         RetrofitClient.create().getPopularTVs(BuildConfig.API_KEY).enqueue(object : Callback<PopularTVShow> {
             override fun onResponse(call: Call<PopularTVShow>, response: Response<PopularTVShow>) {
                 if (response.isSuccessful) {
-                    responseTVShow.postValue(response.body()?.result)
+                    _responsePopularTV.postValue(response.body()?.result)
 
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                         EspressoIdlingResource.decrement()
@@ -81,16 +83,16 @@ class AppRepository : Repository{
             }
 
         })
-        return responseTVShow
+
+        return _responsePopularTV
     }
 
     override fun getDetailTV(id : Int) : LiveData<TVShow> {
-        val responseData = MutableLiveData<TVShow>()
         EspressoIdlingResource.increment()
         RetrofitClient.create().getDetailTV(id, BuildConfig.API_KEY).enqueue(object : Callback<TVShow> {
             override fun onResponse(call: Call<TVShow>, response: Response<TVShow>) {
                 if (response.isSuccessful) {
-                    responseData.postValue(response.body())
+                    _responseDetailTV.postValue(response.body())
 
                     if (!EspressoIdlingResource.getEspressoIdlingResource().isIdleNow) {
                         EspressoIdlingResource.decrement()
@@ -104,6 +106,6 @@ class AppRepository : Repository{
 
         })
 
-        return responseData
+        return _responseDetailTV
     }
 }

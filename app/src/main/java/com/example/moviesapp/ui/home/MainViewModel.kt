@@ -7,10 +7,13 @@ import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
 import com.example.moviesapp.repository.Repository
 
-class MainViewModel(private val repository: Repository = AppRepository()) : ViewModel() {
+class MainViewModel(val repository: Repository = AppRepository()) : ViewModel() {
 
-    fun getMovie() : LiveData<ArrayList<Movie>>  = repository.getPopularMovies()
+    private var movieData: LiveData<ArrayList<Movie>> = repository.getPopularMovies()
+    private var tvShowData: LiveData<ArrayList<TVShow>> = repository.getPopularTVs()
 
-    fun getTVShow() : LiveData<ArrayList<TVShow>> = repository.getPopularTVs()
+    fun getMovie() : LiveData<ArrayList<Movie>> = movieData
+
+    fun getTVShow() : LiveData<ArrayList<TVShow>> = tvShowData
 
 }

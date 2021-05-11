@@ -34,15 +34,16 @@ class DetailActivity : AppCompatActivity() {
 
             binding.progressbar.visibility = View.VISIBLE
 
-            viewModel.setSelectedData(id)
             when (type) {
                 EXTRA_MOVIE -> {
+                    viewModel.setSelectedMovie(id)
                     viewModel.getSelectedMovie().observe(this, { movie ->
                         bindView(movie)
                         binding.progressbar.visibility = View.GONE
                     })
                 }
                 EXTRA_TVSHOW -> {
+                    viewModel.setSelectedTV(id)
                     viewModel.getSelectedTVShow().observe(this, { tvShow ->
                         bindView(tvShow)
                         binding.progressbar.visibility = View.GONE

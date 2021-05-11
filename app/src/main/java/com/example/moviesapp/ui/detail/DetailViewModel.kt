@@ -10,14 +10,14 @@ import com.example.moviesapp.repository.Repository
 
 class DetailViewModel(private val repository: Repository = AppRepository()) : ViewModel() {
 
-    var id: Int = 0
+    private lateinit var movieData : LiveData<Movie>
+    private lateinit var tvShowData : LiveData<TVShow>
 
-    fun setSelectedData(id: Int) { this.id = id }
+    fun setSelectedMovie(id: Int) { movieData = repository.getDetailMovie(id) }
 
-    fun getSelectedMovie() : LiveData<Movie> {
-        return repository.getDetailMovie(id)
-    }
-    fun getSelectedTVShow() : LiveData<TVShow> {
-        return repository.getDetailTV(id)
-    }
+    fun setSelectedTV(id: Int) { tvShowData = repository.getDetailTV(id) }
+
+    fun getSelectedMovie() : LiveData<Movie> = movieData
+
+    fun getSelectedTVShow() : LiveData<TVShow> = tvShowData
 }

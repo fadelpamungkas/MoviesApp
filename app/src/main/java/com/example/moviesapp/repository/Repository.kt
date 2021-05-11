@@ -6,9 +6,9 @@ import com.example.moviesapp.model.TVShow
 
 interface Repository {
 
-    fun getPopularMovies(): LiveData<ArrayList<Movie>>
+    fun getPopularMovies() : LiveData<ArrayList<Movie>>
 
-    fun getPopularTVs(): LiveData<ArrayList<TVShow>>
+    fun getPopularTVs() : LiveData<ArrayList<TVShow>>
 
     fun getDetailMovie(id : Int) : LiveData<Movie>
 
