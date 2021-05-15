@@ -2,17 +2,17 @@ package com.example.moviesapp.ui.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.moviesapp.R
 import com.example.moviesapp.databinding.ActivityDetailBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
-import com.example.moviesapp.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private var bookmarkStatus = false
@@ -29,8 +29,8 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory).get(DetailViewModel::class.java)
+        val detailViewModel: DetailViewModel by viewModels()
+
         var id: Int = 0
         var type: Int = 0
         var movieData: Movie = Movie(id)
@@ -44,15 +44,15 @@ class DetailActivity : AppCompatActivity() {
 
             when (type) {
                 EXTRA_MOVIE -> {
-                    viewModel.findMovie(id)?.observe(this, { movie ->
+                    detailViewModel.findMovie(id)?.observe(this, { movie ->
                         if (movie != null){
                             movieData = movie
                             bindView(movie)
                             bookmarkStatus = true
                             fabBookmarkIcon(true)
                         } else {
-                            viewModel.setSelectedMovie(id)
-                            viewModel.getSelectedMovie().observe(this, { movie ->
+                            detailViewModel.setSelectedMovie(id)
+                            detailViewModel.getSelectedMovie().observe(this, { movie ->
                                 movieData = movie
                                 bindView(movie)
                                 fabBookmarkIcon(false)
@@ -62,15 +62,15 @@ class DetailActivity : AppCompatActivity() {
                     })
                 }
                 EXTRA_TVSHOW -> {
-                    viewModel.findTVShow(id)?.observe(this, { tvShow ->
+                    detailViewModel.findTVShow(id)?.observe(this, { tvShow ->
                         if (tvShow != null){
                             tvShowData = tvShow
                             bindView(tvShow)
                             bookmarkStatus = true
                             fabBookmarkIcon(true)
                         } else {
-                            viewModel.setSelectedTV(id)
-                            viewModel.getSelectedTVShow().observe(this, { tvShow ->
+                            detailViewModel.setSelectedTV(id)
+                            detailViewModel.getSelectedTVShow().observe(this, { tvShow ->
                                 tvShowData = tvShow
                                 bindView(tvShow)
                                 fabBookmarkIcon(false)
@@ -86,16 +86,16 @@ class DetailActivity : AppCompatActivity() {
         binding.fabFavorite.setOnClickListener { view ->
             if (!bookmarkStatus) {
                 when (type) {
-                    EXTRA_MOVIE -> viewModel.insert(movieData)
-                    EXTRA_TVSHOW -> viewModel.insert(tvShowData)
+                    EXTRA_MOVIE -> detailViewModel.insert(movieData)
+                    EXTRA_TVSHOW -> detailViewModel.insert(tvShowData)
                     else -> return@setOnClickListener
                 }
                 fabBookmarkIcon(true)
                 Snackbar.make(view, getString(R.string.add_to_bookmark), Snackbar.LENGTH_SHORT).show()
             } else {
                 when (type) {
-                    EXTRA_MOVIE -> viewModel.deleteMovie(movieData.id)
-                    EXTRA_TVSHOW -> viewModel.deleteTVShow(tvShowData.id)
+                    EXTRA_MOVIE -> detailViewModel.deleteMovie(movieData.id)
+                    EXTRA_TVSHOW -> detailViewModel.deleteTVShow(tvShowData.id)
                     else -> return@setOnClickListener
                 }
                 fabBookmarkIcon(false)

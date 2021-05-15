@@ -6,20 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviesapp.R
 import com.example.moviesapp.adapter.MovieAdapter
 import com.example.moviesapp.adapter.TVShowAdapter
 import com.example.moviesapp.databinding.FragmentFavoriteBinding
-import com.example.moviesapp.databinding.FragmentTabBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.ui.detail.DetailActivity
-import com.example.moviesapp.ui.home.MainViewModel
-import com.example.moviesapp.ui.home.TabFragment
-import com.example.moviesapp.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
     companion object {
         private const val ARG_SECTION_NUMBER = "section_number"
@@ -48,8 +46,7 @@ class FavoriteFragment : Fragment() {
         binding.rvFragment.layoutManager = LinearLayoutManager(this.context)
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
-        val factory = ViewModelFactory.getInstance(requireContext())
-        val favoriteViewModel: FavoriteViewModel = ViewModelProvider(this@FavoriteFragment, factory).get(FavoriteViewModel::class.java)
+        val favoriteViewModel: FavoriteViewModel by activityViewModels()
 
         when (index) {
             1 -> {

@@ -12,7 +12,9 @@ import com.example.moviesapp.databinding.ActivityMainBinding
 import com.example.moviesapp.ui.favorite.FavoriteActivity
 import com.example.moviesapp.utils.Constant
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 

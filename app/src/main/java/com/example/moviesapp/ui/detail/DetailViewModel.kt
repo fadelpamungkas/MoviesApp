@@ -8,9 +8,12 @@ import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
 import com.example.moviesapp.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel(private val repository: AppRepository) : ViewModel() {
+@HiltViewModel
+class DetailViewModel @Inject constructor(private val repository: AppRepository) : ViewModel() {
 
     private lateinit var movieData : LiveData<Movie>
     private lateinit var tvShowData : LiveData<TVShow>

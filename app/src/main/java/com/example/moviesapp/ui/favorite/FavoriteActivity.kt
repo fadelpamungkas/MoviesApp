@@ -9,7 +9,9 @@ import com.example.moviesapp.adapter.SectionsPagerAdapter
 import com.example.moviesapp.databinding.ActivityFavoriteBinding
 import com.example.moviesapp.utils.Constant
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding : ActivityFavoriteBinding
 

@@ -9,13 +9,17 @@ import com.example.moviesapp.model.PopularMovies
 import com.example.moviesapp.model.PopularTVShow
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.localsource.AppDAO
-import com.example.moviesapp.repository.remotesource.RetrofitClient
+import com.example.moviesapp.repository.remotesource.ApiRequest
 import com.example.moviesapp.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class AppRepository(private val appDAO: AppDAO) : Repository{
+class AppRepository @Inject constructor(
+    private val appDAO: AppDAO, 
+    private val apiRequest: ApiRequest
+    ) : Repository{
 
     private val _responsePopularMovie = MutableLiveData<ArrayList<Movie>>()
     private val _responsePopularTV = MutableLiveData<ArrayList<TVShow>>()
@@ -29,7 +33,7 @@ class AppRepository(private val appDAO: AppDAO) : Repository{
 
     override fun getPopularMovies() : LiveData<ArrayList<Movie>>{
         EspressoIdlingResource.increment()
-        RetrofitClient.create().getPopularMovies(BuildConfig.API_KEY).enqueue(object : Callback<PopularMovies> {
+        apiRequest.getPopularMovies(BuildConfig.API_KEY).enqueue(object : Callback<PopularMovies> {
             override fun onResponse(call: Call<PopularMovies>, response: Response<PopularMovies>) {
                 if (response.isSuccessful) {
                     _responsePopularMovie.postValue(response.body()?.result)
@@ -51,7 +55,7 @@ class AppRepository(private val appDAO: AppDAO) : Repository{
 
     override fun getDetailMovie(id : Int) : LiveData<Movie> {
         EspressoIdlingResource.increment()
-        RetrofitClient.create().getDetailMovie(id, BuildConfig.API_KEY).enqueue(object : Callback<Movie> {
+        apiRequest.getDetailMovie(id, BuildConfig.API_KEY).enqueue(object : Callback<Movie> {
             override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
                 if (response.isSuccessful) {
                     _responseDetailMovie.postValue(response.body())
@@ -73,7 +77,7 @@ class AppRepository(private val appDAO: AppDAO) : Repository{
 
     override fun getPopularTVs() : LiveData<ArrayList<TVShow>>{
         EspressoIdlingResource.increment()
-        RetrofitClient.create().getPopularTVs(BuildConfig.API_KEY).enqueue(object : Callback<PopularTVShow> {
+        apiRequest.getPopularTVs(BuildConfig.API_KEY).enqueue(object : Callback<PopularTVShow> {
             override fun onResponse(call: Call<PopularTVShow>, response: Response<PopularTVShow>) {
                 if (response.isSuccessful) {
                     _responsePopularTV.postValue(response.body()?.result)
@@ -95,7 +99,7 @@ class AppRepository(private val appDAO: AppDAO) : Repository{
 
     override fun getDetailTV(id : Int) : LiveData<TVShow> {
         EspressoIdlingResource.increment()
-        RetrofitClient.create().getDetailTV(id, BuildConfig.API_KEY).enqueue(object : Callback<TVShow> {
+        apiRequest.getDetailTV(id, BuildConfig.API_KEY).enqueue(object : Callback<TVShow> {
             override fun onResponse(call: Call<TVShow>, response: Response<TVShow>) {
                 if (response.isSuccessful) {
                     _responseDetailTV.postValue(response.body())

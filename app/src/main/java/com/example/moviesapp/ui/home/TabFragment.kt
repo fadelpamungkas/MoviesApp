@@ -2,12 +2,11 @@ package com.example.moviesapp.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviesapp.R
 import com.example.moviesapp.adapter.MovieAdapter
@@ -16,10 +15,9 @@ import com.example.moviesapp.databinding.FragmentTabBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.ui.detail.DetailActivity
-import com.example.moviesapp.utils.ViewModelFactory
-import java.util.ArrayList
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class TabFragment : Fragment() {
 
     companion object {
@@ -49,8 +47,7 @@ class TabFragment : Fragment() {
         binding.rvFragment.layoutManager = LinearLayoutManager(this.context)
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
-        val factory = ViewModelFactory.getInstance(requireContext())
-        val mainViewModel: MainViewModel = ViewModelProvider(this@TabFragment, factory).get(MainViewModel::class.java)
+        val mainViewModel: MainViewModel by activityViewModels()
 
         when (index) {
             1 -> {

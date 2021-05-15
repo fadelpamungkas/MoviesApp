@@ -6,8 +6,11 @@ import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
 import com.example.moviesapp.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(val repository: AppRepository) : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(val repository: AppRepository) : ViewModel() {
 
     private var movieData: LiveData<ArrayList<Movie>> = repository.getPopularMovies()
     private var tvShowData: LiveData<ArrayList<TVShow>> = repository.getPopularTVs()
