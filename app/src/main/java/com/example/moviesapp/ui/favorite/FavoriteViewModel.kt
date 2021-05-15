@@ -3,6 +3,9 @@ package com.example.moviesapp.ui.favorite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import androidx.paging.PagingData
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.AppRepository
@@ -13,8 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(private val repository: AppRepository): ViewModel() {
 
-    private val _databaseMovie: LiveData<ArrayList<Movie>> = repository.getAllMovieFromDatabase()
-    private val _databaseTVShow: LiveData<ArrayList<TVShow>> = repository.getALlTVShowFromDatabase()
+    private val _databaseMovie: LiveData<PagedList<Movie>> =
+        LivePagedListBuilder(repository.getAllMovieFromDatabase(), 10).build()
+    private val _databaseTVShow: LiveData<PagedList<TVShow>> =
+        LivePagedListBuilder(repository.getALlTVShowFromDatabase(), 10).build()
     private var _findMovie: LiveData<Movie>? = null
     private var _findTVShow: LiveData<TVShow>? = null
 
@@ -32,7 +37,7 @@ class FavoriteViewModel @Inject constructor(private val repository: AppRepositor
         return _findTVShow
     }
 
-    fun getAllMovies(): LiveData<ArrayList<Movie>> = _databaseMovie
+    fun getAllMovies(): LiveData<PagedList<Movie>> = _databaseMovie
 
-    fun getAllTVShows(): LiveData<ArrayList<TVShow>> = _databaseTVShow
+    fun getAllTVShows(): LiveData<PagedList<TVShow>> = _databaseTVShow
 }

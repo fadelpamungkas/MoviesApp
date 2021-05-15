@@ -1,6 +1,7 @@
 package com.example.moviesapp.repository.localsource
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
@@ -21,10 +22,10 @@ interface AppDAO {
     suspend fun deleteTVShow(id : Int)
 
     @Query("select * from movie_favorite")
-    fun getAllMovieFromDatabase(): LiveData<List<Movie>>
+    fun getAllMovieFromDatabase(): DataSource.Factory<Int, Movie>
 
     @Query("select * from tvshow_favorite")
-    fun getAllTVShowFromDatabase(): LiveData<List<TVShow>>
+    fun getAllTVShowFromDatabase(): DataSource.Factory<Int, TVShow>
 
     @Query("select * from movie_favorite where id = :id")
     fun findMovieFromDatabase(id: Int) : LiveData<Movie>

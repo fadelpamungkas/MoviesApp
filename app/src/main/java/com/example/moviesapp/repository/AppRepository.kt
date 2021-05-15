@@ -3,6 +3,7 @@ package com.example.moviesapp.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import com.example.moviesapp.BuildConfig
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.PopularMovies
@@ -26,8 +27,8 @@ class AppRepository @Inject constructor(
     private val _responseDetailMovie = MutableLiveData<Movie>()
     private val _responseDetailTV = MutableLiveData<TVShow>()
 
-    private val _movieDatabase = appDAO.getAllMovieFromDatabase()
-    private val _tvShowDatabase = appDAO.getAllTVShowFromDatabase()
+//    private val _movieDatabase = appDAO.getAllMovieFromDatabase()
+//    private val _tvShowDatabase = appDAO.getAllTVShowFromDatabase()
     private var _findMovieDatabase: LiveData<Movie>? = null
     private var _findTVShowDatabase: LiveData<TVShow>? = null
 
@@ -119,12 +120,12 @@ class AppRepository @Inject constructor(
         return _responseDetailTV
     }
 
-    override fun getAllMovieFromDatabase(): LiveData<ArrayList<Movie>> {
-        return _movieDatabase as LiveData<ArrayList<Movie>>
+    override fun getAllMovieFromDatabase(): DataSource.Factory<Int, Movie> {
+        return appDAO.getAllMovieFromDatabase()
     }
 
-    override fun getALlTVShowFromDatabase(): LiveData<ArrayList<TVShow>> {
-        return _tvShowDatabase as LiveData<ArrayList<TVShow>>
+    override fun getALlTVShowFromDatabase(): DataSource.Factory<Int, TVShow> {
+        return appDAO.getAllTVShowFromDatabase()
     }
 
     override fun findMovieFromDatabase(id: Int): LiveData<Movie>? {

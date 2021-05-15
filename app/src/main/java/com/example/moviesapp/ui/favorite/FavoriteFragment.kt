@@ -10,7 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moviesapp.R
 import com.example.moviesapp.adapter.MovieAdapter
+import com.example.moviesapp.adapter.MoviePagingAdapter
 import com.example.moviesapp.adapter.TVShowAdapter
+import com.example.moviesapp.adapter.TVShowPagingAdapter
 import com.example.moviesapp.databinding.FragmentFavoriteBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
@@ -51,19 +53,19 @@ class FavoriteFragment : Fragment() {
         when (index) {
             1 -> {
 
-                val adapter = MovieAdapter()
+                val adapter = MoviePagingAdapter()
                 adapter.notifyDataSetChanged()
                 binding.rvFragment.adapter = adapter
                 binding.progressbar.visibility = View.VISIBLE
 
                 favoriteViewModel.getAllMovies().observe(viewLifecycleOwner, { listMovies ->
                     if (listMovies != null) {
-                        adapter.setMovies(listMovies)
+                        adapter.submitList(listMovies)
                         binding.progressbar.visibility = View.GONE
                     }
                 })
 
-                adapter.setOnItemClickCallback(object : MovieAdapter.OnItemClickCallback {
+                adapter.setOnItemClickCallback(object : MoviePagingAdapter.OnItemClickCallback {
                     override fun onItemClicked(data: Movie) {
                         val intent = Intent(activity, DetailActivity::class.java)
                         intent.putExtra(DetailActivity.EXTRA_ID, data.id)
@@ -76,19 +78,19 @@ class FavoriteFragment : Fragment() {
 
             2 -> {
 
-                val adapter = TVShowAdapter()
+                val adapter = TVShowPagingAdapter()
                 adapter.notifyDataSetChanged()
                 binding.rvFragment.adapter = adapter
                 binding.progressbar.visibility = View.VISIBLE
 
                 favoriteViewModel.getAllTVShows().observe(viewLifecycleOwner, { listTVShows ->
                     if (listTVShows != null) {
-                        adapter.setTVShow(listTVShows)
+                        adapter.submitList(listTVShows)
                         binding.progressbar.visibility = View.GONE
                     }
                 })
 
-                adapter.setOnItemClickCallback(object : TVShowAdapter.OnItemClickCallback {
+                adapter.setOnItemClickCallback(object : TVShowPagingAdapter.OnItemClickCallback {
 
                     override fun onItemClicked(data: TVShow) {
                         val intent = Intent(activity, DetailActivity::class.java)

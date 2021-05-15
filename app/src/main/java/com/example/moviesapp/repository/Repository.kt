@@ -1,6 +1,7 @@
 package com.example.moviesapp.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 
@@ -14,9 +15,9 @@ interface Repository {
 
     fun getDetailTV(id : Int) : LiveData<TVShow>
 
-    fun getAllMovieFromDatabase() : LiveData<ArrayList<Movie>>
+    fun getAllMovieFromDatabase() : DataSource.Factory<Int, Movie>
 
-    fun getALlTVShowFromDatabase() : LiveData<ArrayList<TVShow>>
+    fun getALlTVShowFromDatabase() : DataSource.Factory<Int, TVShow>
 
     fun findMovieFromDatabase(id: Int) : LiveData<Movie>?
 
