@@ -12,6 +12,7 @@ import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.repository.localsource.AppDAO
 import com.example.moviesapp.repository.remotesource.ApiRequest
 import com.example.moviesapp.utils.EspressoIdlingResource
+import com.example.moviesapp.utils.SortUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -120,12 +121,14 @@ class AppRepository @Inject constructor(
         return _responseDetailTV
     }
 
-    override fun getAllMovieFromDatabase(): DataSource.Factory<Int, Movie> {
-        return appDAO.getAllMovieFromDatabase()
+    override fun getAllMovieFromDatabase(sort: String): DataSource.Factory<Int, Movie> {
+        val query = SortUtils.getSortedQuery(SortUtils.TYPE_MOVIE, sort)
+        return appDAO.getAllMovieFromDatabase(query)
     }
 
-    override fun getALlTVShowFromDatabase(): DataSource.Factory<Int, TVShow> {
-        return appDAO.getAllTVShowFromDatabase()
+    override fun getALlTVShowFromDatabase(sort: String): DataSource.Factory<Int, TVShow> {
+        val query = SortUtils.getSortedQuery(SortUtils.TYPE_TVSHOW, sort)
+        return appDAO.getAllTVShowFromDatabase(query)
     }
 
     override fun findMovieFromDatabase(id: Int): LiveData<Movie>? {

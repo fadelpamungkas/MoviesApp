@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -17,6 +18,7 @@ import com.example.moviesapp.databinding.FragmentFavoriteBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.ui.detail.DetailActivity
+import com.example.moviesapp.utils.SortUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +35,14 @@ class FavoriteFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentFavoriteBinding
+    private val favoriteViewModel: FavoriteViewModel by activityViewModels()
+    private val movieAdapter = MoviePagingAdapter()
+    private val tvShowAdapter = TVShowPagingAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,24 +58,16 @@ class FavoriteFragment : Fragment() {
         binding.rvFragment.layoutManager = LinearLayoutManager(this.context)
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
-        val favoriteViewModel: FavoriteViewModel by activityViewModels()
 
         when (index) {
             1 -> {
-
-                val adapter = MoviePagingAdapter()
-                adapter.notifyDataSetChanged()
-                binding.rvFragment.adapter = adapter
+                movieAdapter.notifyDataSetChanged()
+                binding.rvFragment.adapter = movieAdapter
                 binding.progressbar.visibility = View.VISIBLE
 
-                favoriteViewModel.getAllMovies().observe(viewLifecycleOwner, { listMovies ->
-                    if (listMovies != null) {
-                        adapter.submitList(listMovies)
-                        binding.progressbar.visibility = View.GONE
-                    }
-                })
+                observeData(SortUtils.TYPE_MOVIE, SortUtils.TITLE)
 
-                adapter.setOnItemClickCallback(object : MoviePagingAdapter.OnItemClickCallback {
+                movieAdapter.setOnItemClickCallback(object : MoviePagingAdapter.OnItemClickCallback {
                     override fun onItemClicked(data: Movie) {
                         val intent = Intent(activity, DetailActivity::class.java)
                         intent.putExtra(DetailActivity.EXTRA_ID, data.id)
@@ -77,20 +79,13 @@ class FavoriteFragment : Fragment() {
             }
 
             2 -> {
-
-                val adapter = TVShowPagingAdapter()
-                adapter.notifyDataSetChanged()
-                binding.rvFragment.adapter = adapter
+                tvShowAdapter.notifyDataSetChanged()
+                binding.rvFragment.adapter = tvShowAdapter
                 binding.progressbar.visibility = View.VISIBLE
 
-                favoriteViewModel.getAllTVShows().observe(viewLifecycleOwner, { listTVShows ->
-                    if (listTVShows != null) {
-                        adapter.submitList(listTVShows)
-                        binding.progressbar.visibility = View.GONE
-                    }
-                })
+                observeData(SortUtils.TYPE_TVSHOW, SortUtils.TITLE)
 
-                adapter.setOnItemClickCallback(object : TVShowPagingAdapter.OnItemClickCallback {
+                tvShowAdapter.setOnItemClickCallback(object : TVShowPagingAdapter.OnItemClickCallback {
 
                     override fun onItemClicked(data: TVShow) {
                         val intent = Intent(activity, DetailActivity::class.java)
@@ -99,6 +94,40 @@ class FavoriteFragment : Fragment() {
                         startActivity(intent)
                     }
 
+                })
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var sort = ""
+        when (item.itemId) {
+            R.id.action_title_asc -> sort = SortUtils.TITLE
+            R.id.action_top_rating -> sort = SortUtils.TOP_RATING
+            R.id.action_random -> sort = SortUtils.RANDOM
+        }
+        observeData(SortUtils.TYPE_MOVIE, sort)
+        observeData(SortUtils.TYPE_TVSHOW, sort)
+        item.isChecked = true
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun observeData(type: String, sort: String){
+        when (type) {
+            SortUtils.TYPE_MOVIE -> {
+                favoriteViewModel.getAllMovies(sort).observe(viewLifecycleOwner, { listMovies ->
+                    if (listMovies != null) {
+                        movieAdapter.submitList(listMovies)
+                        binding.progressbar.visibility = View.GONE
+                    }
+                })
+            }
+            SortUtils.TYPE_TVSHOW -> {
+                favoriteViewModel.getAllTVShows(sort).observe(viewLifecycleOwner, { listTVs ->
+                    if (listTVs != null) {
+                        tvShowAdapter.submitList(listTVs)
+                        binding.progressbar.visibility = View.GONE
+                    }
                 })
             }
         }

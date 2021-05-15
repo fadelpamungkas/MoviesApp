@@ -3,6 +3,7 @@ package com.example.moviesapp.repository.localsource
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 
@@ -21,11 +22,13 @@ interface AppDAO {
     @Query("delete from tvshow_favorite where id = :id")
     suspend fun deleteTVShow(id : Int)
 
-    @Query("select * from movie_favorite")
-    fun getAllMovieFromDatabase(): DataSource.Factory<Int, Movie>
+//    @Query("select * from movie_favorite")
+    @RawQuery(observedEntities = [Movie::class])
+    fun getAllMovieFromDatabase(query: SimpleSQLiteQuery): DataSource.Factory<Int, Movie>
 
-    @Query("select * from tvshow_favorite")
-    fun getAllTVShowFromDatabase(): DataSource.Factory<Int, TVShow>
+//    @Query("select * from tvshow_favorite")
+    @RawQuery(observedEntities = [TVShow::class])
+    fun getAllTVShowFromDatabase(query: SimpleSQLiteQuery): DataSource.Factory<Int, TVShow>
 
     @Query("select * from movie_favorite where id = :id")
     fun findMovieFromDatabase(id: Int) : LiveData<Movie>

@@ -15,9 +15,9 @@ interface Repository {
 
     fun getDetailTV(id : Int) : LiveData<TVShow>
 
-    fun getAllMovieFromDatabase() : DataSource.Factory<Int, Movie>
+    fun getAllMovieFromDatabase(sort: String) : DataSource.Factory<Int, Movie>
 
-    fun getALlTVShowFromDatabase() : DataSource.Factory<Int, TVShow>
+    fun getALlTVShowFromDatabase(sort: String) : DataSource.Factory<Int, TVShow>
 
     fun findMovieFromDatabase(id: Int) : LiveData<Movie>?
 

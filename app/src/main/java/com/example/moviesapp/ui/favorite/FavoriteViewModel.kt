@@ -16,10 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(private val repository: AppRepository): ViewModel() {
 
-    private val _databaseMovie: LiveData<PagedList<Movie>> =
-        LivePagedListBuilder(repository.getAllMovieFromDatabase(), 10).build()
-    private val _databaseTVShow: LiveData<PagedList<TVShow>> =
-        LivePagedListBuilder(repository.getALlTVShowFromDatabase(), 10).build()
     private var _findMovie: LiveData<Movie>? = null
     private var _findTVShow: LiveData<TVShow>? = null
 
@@ -37,7 +33,9 @@ class FavoriteViewModel @Inject constructor(private val repository: AppRepositor
         return _findTVShow
     }
 
-    fun getAllMovies(): LiveData<PagedList<Movie>> = _databaseMovie
+    fun getAllMovies(sort: String): LiveData<PagedList<Movie>> =
+        LivePagedListBuilder(repository.getAllMovieFromDatabase(sort), 10).build()
 
-    fun getAllTVShows(): LiveData<PagedList<TVShow>> = _databaseTVShow
+    fun getAllTVShows(sort: String): LiveData<PagedList<TVShow>> =
+        LivePagedListBuilder(repository.getALlTVShowFromDatabase(sort), 10).build()
 }
