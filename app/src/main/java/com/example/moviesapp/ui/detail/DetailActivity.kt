@@ -10,9 +10,12 @@ import com.example.moviesapp.R
 import com.example.moviesapp.databinding.ActivityDetailBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
+import com.example.moviesapp.utils.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
+    private var bookmarkStatus = false
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -26,37 +29,95 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel = ViewModelProvider(this, factory).get(DetailViewModel::class.java)
+        var id: Int = 0
+        var type: Int = 0
+        var movieData: Movie = Movie(id)
+        var tvShowData: TVShow = TVShow(id)
 
         if (intent.extras != null) {
-            val id = intent.getIntExtra(EXTRA_ID, 0)
-            val type = intent.getIntExtra(EXTRA_TYPE, 0)
+            id = intent.getIntExtra(EXTRA_ID, 0)
+            type = intent.getIntExtra(EXTRA_TYPE, 0)
 
             binding.progressbar.visibility = View.VISIBLE
 
             when (type) {
                 EXTRA_MOVIE -> {
-                    viewModel.setSelectedMovie(id)
-                    viewModel.getSelectedMovie().observe(this, { movie ->
-                        bindView(movie)
-                        binding.progressbar.visibility = View.GONE
+                    viewModel.findMovie(id)?.observe(this, { movie ->
+                        if (movie != null){
+                            movieData = movie
+                            bindView(movie)
+                            bookmarkStatus = true
+                            fabBookmarkIcon(true)
+                        } else {
+                            viewModel.setSelectedMovie(id)
+                            viewModel.getSelectedMovie().observe(this, { movie ->
+                                movieData = movie
+                                bindView(movie)
+                                fabBookmarkIcon(false)
+                            })
+                        }
+
                     })
                 }
                 EXTRA_TVSHOW -> {
-                    viewModel.setSelectedTV(id)
-                    viewModel.getSelectedTVShow().observe(this, { tvShow ->
-                        bindView(tvShow)
-                        binding.progressbar.visibility = View.GONE
+                    viewModel.findTVShow(id)?.observe(this, { tvShow ->
+                        if (tvShow != null){
+                            tvShowData = tvShow
+                            bindView(tvShow)
+                            bookmarkStatus = true
+                            fabBookmarkIcon(true)
+                        } else {
+                            viewModel.setSelectedTV(id)
+                            viewModel.getSelectedTVShow().observe(this, { tvShow ->
+                                tvShowData = tvShow
+                                bindView(tvShow)
+                                fabBookmarkIcon(false)
+                            })
+                        }
+
                     })
                 }
                 else -> return
             }
         }
 
+        binding.fabFavorite.setOnClickListener { view ->
+            if (!bookmarkStatus) {
+                when (type) {
+                    EXTRA_MOVIE -> viewModel.insert(movieData)
+                    EXTRA_TVSHOW -> viewModel.insert(tvShowData)
+                    else -> return@setOnClickListener
+                }
+                fabBookmarkIcon(true)
+                Snackbar.make(view, getString(R.string.add_to_bookmark), Snackbar.LENGTH_SHORT).show()
+            } else {
+                when (type) {
+                    EXTRA_MOVIE -> viewModel.deleteMovie(movieData.id)
+                    EXTRA_TVSHOW -> viewModel.deleteTVShow(tvShowData.id)
+                    else -> return@setOnClickListener
+                }
+                fabBookmarkIcon(false)
+                Snackbar.make(view, getString(R.string.remove_from_bookmark), Snackbar.LENGTH_SHORT).show()
+            }
+            bookmarkStatus = !bookmarkStatus
+        }
+
+    }
+
+    private fun fabBookmarkIcon(bookmark: Boolean) {
+        if (bookmark) {
+            binding.fabFavorite.setImageResource(R.drawable.ic_bookmark_24)
+        } else {
+            binding.fabFavorite.setImageResource(R.drawable.ic_bookmark_border_24)
+        }
     }
 
     private fun bindView(movie: Movie) {
         with(binding) {
+            progressbar.visibility = View.GONE
+
             titleDetail.text = movie.title
             rating.text = getString(R.string.rating)
             ratingDetail.text = movie.rating.toString()
@@ -73,6 +134,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun bindView(tvShow: TVShow) {
         with(binding) {
+            progressbar.visibility = View.GONE
+
             titleDetail.text = tvShow.title
             rating.text = getString(R.string.rating)
             ratingDetail.text = tvShow.rating.toString()

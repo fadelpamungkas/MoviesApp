@@ -18,6 +18,7 @@ import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.ui.detail.DetailActivity
 import com.example.moviesapp.ui.home.MainViewModel
 import com.example.moviesapp.ui.home.TabFragment
+import com.example.moviesapp.utils.ViewModelFactory
 
 class FavoriteFragment : Fragment() {
     companion object {
@@ -47,7 +48,8 @@ class FavoriteFragment : Fragment() {
         binding.rvFragment.layoutManager = LinearLayoutManager(this.context)
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
-        val favoriteViewModel: FavoriteViewModel = ViewModelProvider(this@FavoriteFragment).get(FavoriteViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(requireContext())
+        val favoriteViewModel: FavoriteViewModel = ViewModelProvider(this@FavoriteFragment, factory).get(FavoriteViewModel::class.java)
 
         when (index) {
             1 -> {
@@ -57,12 +59,12 @@ class FavoriteFragment : Fragment() {
                 binding.rvFragment.adapter = adapter
                 binding.progressbar.visibility = View.VISIBLE
 
-//                mainViewModel.getMovie().observe(viewLifecycleOwner, { listMovies ->
-//                    if (listMovies != null) {
-//                        adapter.setMovies(listMovies)
-//                        binding.progressbar.visibility = View.GONE
-//                    }
-//                })
+                favoriteViewModel.getAllMovies().observe(viewLifecycleOwner, { listMovies ->
+                    if (listMovies != null) {
+                        adapter.setMovies(listMovies)
+                        binding.progressbar.visibility = View.GONE
+                    }
+                })
 
                 adapter.setOnItemClickCallback(object : MovieAdapter.OnItemClickCallback {
                     override fun onItemClicked(data: Movie) {
@@ -82,12 +84,12 @@ class FavoriteFragment : Fragment() {
                 binding.rvFragment.adapter = adapter
                 binding.progressbar.visibility = View.VISIBLE
 
-//                mainViewModel.getTVShow().observe(viewLifecycleOwner, { listTVs ->
-//                    if (listTVs != null) {
-//                        adapter.setTVShow(listTVs)
-//                        binding.progressbar.visibility = View.GONE
-//                    }
-//                })
+                favoriteViewModel.getAllTVShows().observe(viewLifecycleOwner, { listTVShows ->
+                    if (listTVShows != null) {
+                        adapter.setTVShow(listTVShows)
+                        binding.progressbar.visibility = View.GONE
+                    }
+                })
 
                 adapter.setOnItemClickCallback(object : TVShowAdapter.OnItemClickCallback {
 

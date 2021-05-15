@@ -1,10 +1,12 @@
 package com.example.moviesapp.model
 
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "movie_favorite", primaryKeys = ["id"])
 data class Movie(
     @SerializedName("id")
     val id: Int,

@@ -13,4 +13,20 @@ interface Repository {
     fun getDetailMovie(id : Int) : LiveData<Movie>
 
     fun getDetailTV(id : Int) : LiveData<TVShow>
+
+    fun getAllMovieFromDatabase() : LiveData<ArrayList<Movie>>
+
+    fun getALlTVShowFromDatabase() : LiveData<ArrayList<TVShow>>
+
+    fun findMovieFromDatabase(id: Int) : LiveData<Movie>?
+
+    fun findTVShowFromDatabase(id: Int) : LiveData<TVShow>?
+
+    suspend fun deleteMovie(id: Int)
+
+    suspend fun deleteTVShow(id: Int)
+
+    suspend fun insert(movie: Movie)
+
+    suspend fun insert(tvShow: TVShow)
 }

@@ -8,18 +8,24 @@ import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.PopularMovies
 import com.example.moviesapp.model.PopularTVShow
 import com.example.moviesapp.model.TVShow
+import com.example.moviesapp.repository.localsource.AppDAO
 import com.example.moviesapp.repository.remotesource.RetrofitClient
 import com.example.moviesapp.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AppRepository : Repository{
+class AppRepository(private val appDAO: AppDAO) : Repository{
 
     private val _responsePopularMovie = MutableLiveData<ArrayList<Movie>>()
     private val _responsePopularTV = MutableLiveData<ArrayList<TVShow>>()
-    val _responseDetailMovie = MutableLiveData<Movie>()
-    val _responseDetailTV = MutableLiveData<TVShow>()
+    private val _responseDetailMovie = MutableLiveData<Movie>()
+    private val _responseDetailTV = MutableLiveData<TVShow>()
+
+    private val _movieDatabase = appDAO.getAllMovieFromDatabase()
+    private val _tvShowDatabase = appDAO.getAllTVShowFromDatabase()
+    private var _findMovieDatabase: LiveData<Movie>? = null
+    private var _findTVShowDatabase: LiveData<TVShow>? = null
 
     override fun getPopularMovies() : LiveData<ArrayList<Movie>>{
         EspressoIdlingResource.increment()
@@ -107,5 +113,39 @@ class AppRepository : Repository{
         })
 
         return _responseDetailTV
+    }
+
+    override fun getAllMovieFromDatabase(): LiveData<ArrayList<Movie>> {
+        return _movieDatabase as LiveData<ArrayList<Movie>>
+    }
+
+    override fun getALlTVShowFromDatabase(): LiveData<ArrayList<TVShow>> {
+        return _tvShowDatabase as LiveData<ArrayList<TVShow>>
+    }
+
+    override fun findMovieFromDatabase(id: Int): LiveData<Movie>? {
+        _findMovieDatabase = appDAO.findMovieFromDatabase(id)
+        return _findMovieDatabase
+    }
+
+    override fun findTVShowFromDatabase(id: Int): LiveData<TVShow>? {
+        _findTVShowDatabase = appDAO.findTVShowFromDatabase(id)
+        return _findTVShowDatabase
+    }
+
+    override suspend fun deleteMovie(id: Int) {
+        appDAO.deleteMovie(id)
+    }
+
+    override suspend fun deleteTVShow(id: Int) {
+        appDAO.deleteTVShow(id)
+    }
+
+    override suspend fun insert(movie: Movie) {
+        appDAO.insert(movie)
+    }
+
+    override suspend fun insert(tvShow: TVShow) {
+        appDAO.insert(tvShow)
     }
 }

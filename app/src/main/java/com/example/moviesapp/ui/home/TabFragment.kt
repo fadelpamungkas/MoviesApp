@@ -16,6 +16,7 @@ import com.example.moviesapp.databinding.FragmentTabBinding
 import com.example.moviesapp.model.Movie
 import com.example.moviesapp.model.TVShow
 import com.example.moviesapp.ui.detail.DetailActivity
+import com.example.moviesapp.utils.ViewModelFactory
 import java.util.ArrayList
 
 
@@ -48,7 +49,8 @@ class TabFragment : Fragment() {
         binding.rvFragment.layoutManager = LinearLayoutManager(this.context)
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
-        val mainViewModel: MainViewModel = ViewModelProvider(this@TabFragment).get(MainViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(requireContext())
+        val mainViewModel: MainViewModel = ViewModelProvider(this@TabFragment, factory).get(MainViewModel::class.java)
 
         when (index) {
             1 -> {

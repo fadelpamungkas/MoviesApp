@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.moviesapp"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -47,7 +47,11 @@ dependencies {
     def mockitoVersion = '3.6.0'
     def mockitoKotlinVersion = '2.2.0'
     def androidCoreTestVersion = '2.1.0'
+    def room_version = "2.3.0"
 
+    implementation "androidx.room:room-runtime:${room_version}"
+    implementation "androidx.room:room-ktx:${room_version}"
+    kapt "androidx.room:room-compiler:${room_version}"
 
     implementation "com.squareup.retrofit2:retrofit:${retrofit2_version}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit2_version}"
